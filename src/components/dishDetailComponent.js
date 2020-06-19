@@ -30,6 +30,7 @@ class DishDetail extends Component {
                     </ul>    
                 </div>
             );
+            
         }
         else{
             return(
