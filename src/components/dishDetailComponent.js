@@ -1,7 +1,6 @@
 import React, { Component} from 'react';
-import Menu from './menuComponent';
-import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
-import { DISHES } from '../shared/dishes';
+import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
+
 
 class DishDetail extends Component {
     constructor(props) {
@@ -64,9 +63,11 @@ class DishDetail extends Component {
         const dish=this.props.dish;
         
         return (
-            <div className="row">
-                {this.renderDish(dish)}
-                {this.renderComment(dish)}
+            <div className="container">
+                <div className="row">
+                    {this.renderDish(dish)}
+                    {this.renderComment(dish)}
+                </div>
             </div>
         );
     }
