@@ -26,6 +26,8 @@ function RenderLeader({leaders}){
         </Media>
     );
 }
+
+
 const About = (props) => {
 
     
