@@ -1,8 +1,80 @@
-import React from 'react';
-import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import React, { Component } from 'react';
+import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem, Modal, ModalHeader,ModalBody, Row, Col, Label, Button} from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { Control,  LocalForm, Errors} from 'react-redux-form';
 
+    const required = (val) => val && val.length;
+    const maxLength = (len) => (val) =>!(val) || (val.length <= len);
+    const minLength = (len) => (val) => (val) && (val.length >= len);
+    class CommentForm extends Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                isModalCommentOpen: false
+            }
+            this.toggleModal=this.toggleModal.bind(this);
+            this.handleSubmit=this.handleSubmit.bind(this);
+        }
 
+        toggleModal() {
+            this.setState({
+                isModalCommentOpen: !this.state.isModalCommentOpen
+            });
+        }
+
+        handleSubmit(values) {
+            this.toggleModal();
+            console.log("Current state is: " + JSON.stringify(values));
+            alert("Current satte is: " + JSON.stringify(values));
+            
+        }
+
+        render() {
+            return(
+                <React.Fragment>
+                    <Button outline onClick={this.toggleModal}>
+                        <span className="fa fa-pencil"></span> Submit Comment
+                    </Button>
+                    <Modal isOpen={this.state.isModalCommentOpen} toggle={this.toggleModal}>
+                        <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
+                        <ModalBody>
+                            <LocalForm onSubmit={this.handleSubmit}>
+                                <Row className="form-group">
+                                    <Label htmlFor="rating" md={12}>Rating</Label>
+                                    <Col md={{size:12}}>
+                                        <Control.select model=".rating" id="rating" name="rating" placeholder="1" className="form-control"  >
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                        </Control.select>
+                                    </Col>
+                                </Row>
+                                <Row className="form-group">
+                                    <Label htmlFor="author" md={12}>Your Name</Label>
+                                    <Col md={12}>
+                                        <Control.text model=".author" id="author" name="author" placeholder="Your Name" className="form-control"   validators={{required, minLength: minLength(3), maxLength: maxLength(15)}} />
+                                        <Errors className="text-danger" model=".author" show="touched" messages={{required:'Required',minLength:'Must Be greater than 2 characters', maxLength:'Must be 15 Characters or less'}}></Errors>
+                                    </Col>
+                                </Row>
+                                <Row className="form-group">
+                                    <Label htmlFor="comment" md={12}>Comment</Label>
+                                    <Col md={12}>
+                                        <Control.textarea model=".comment" id="comment" name="comment" rows="5" className="form-control" />
+                                    </Col>
+                                </Row>
+                                <Button type="submit" value="submit" color="primary">
+                                    Submit
+                                </Button>
+                            </LocalForm>
+                        </ModalBody>
+                    </Modal>
+                </React.Fragment>
+            );
+
+        }
+    }
     
     function RenderComment({comments}){
         
@@ -19,7 +91,8 @@ import { Link } from 'react-router-dom';
                                 </li>
                             );
                         })}
-                    </ul>    
+                    </ul>
+                    <CommentForm />    
                 </div>
             );
             
