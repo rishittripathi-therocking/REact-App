@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Control,  LocalForm, Errors} from 'react-redux-form';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger} from 'react-animation-components';
 
     const required = (val) => val && val.length;
     const maxLength = (len) => (val) =>!(val) || (val.length <= len);
@@ -84,14 +85,18 @@ import { baseUrl } from '../shared/baseUrl';
                 <div className="col-12 col-md-5 m-1">
                     <h3>Comments</h3>
                     <ul className="list-unstyled">
-                        {comments.map((Selectedcomment) => {
-                            return(
-                                <li key={Selectedcomment.id}>
-                                    <p>{Selectedcomment.comment}</p>
-                                    <p>--{Selectedcomment.author} , {new Intl.DateTimeFormat('en-US', {year:'numeric', month:'short', day:'2-digit'}).format(new Date(Date.parse(Selectedcomment.date)))}</p>
-                                </li>
-                            );
-                        })}
+                        <Stagger in>
+                            {comments.map((Selectedcomment) => {
+                                return(
+                                    <Fade in>
+                                        <li key={Selectedcomment.id}>
+                                            <p>{Selectedcomment.comment}</p>
+                                            <p>--{Selectedcomment.author} , {new Intl.DateTimeFormat('en-US', {year:'numeric', month:'short', day:'2-digit'}).format(new Date(Date.parse(Selectedcomment.date)))}</p>
+                                        </li>
+                                    </Fade>
+                                );
+                            })}
+                        </Stagger>
                     </ul>
                     <CommentForm dishId={dishId} postComment={postComment}/>    
                 </div>
@@ -109,13 +114,18 @@ import { baseUrl } from '../shared/baseUrl';
         if(dish!=null){
             return(
                 <div className="col-12 col-md-5 m-1">
-                    <Card>
-                        <CardImg width="100%" object src={baseUrl + dish.image} alt={dish.name}></CardImg>
-                        <CardBody>
-                            <CardTitle>{dish.name}</CardTitle>
-                            <CardText>{dish.description}</CardText>
-                        </CardBody>
-                    </Card>
+                    <FadeTransform in 
+                        transformProps = {{
+                            exitTransform: 'scale(0.5) translateY(-50%)'
+                    }}>
+                        <Card>
+                            <CardImg width="100%" object src={baseUrl + dish.image} alt={dish.name}></CardImg>
+                            <CardBody>
+                                <CardTitle>{dish.name}</CardTitle>
+                                <CardText>{dish.description}</CardText>
+                            </CardBody>
+                        </Card>
+                    </FadeTransform>
                 </div>
             );
         }
